@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Klinly — Operator dashboard</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' font-weight='bold' font-family='system-ui,sans-serif'%3EK%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --background: hsl(210, 20%, 98%);
+        --foreground: hsl(200, 24%, 12%);
+        --muted: hsl(210, 15%, 95%);
+        --muted-foreground: hsl(200, 10%, 45%);
+        --card: #fff;
+        --border: hsl(214, 20%, 88%);
+        --destructive: hsl(0, 84%, 60%);
+        --destructive-foreground: #fff;
+        --shadow-card: 0 2px 12px -2px hsl(200 24% 12% / 0.1);
+        --sky-300: #7dd3fc;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Inter", system-ui, sans-serif;
+        background: var(--background);
+        color: var(--foreground);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1,
+      h2,
+      h3,
+      .font-display {
+        font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 64rem;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: var(--card);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .site-header .row {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 0.5rem 0.75rem;
+        padding: 1rem;
+      }
+
+      .header-title {
+        justify-self: start;
+        min-width: 0;
+      }
+
+      .header-demo {
+        justify-self: center;
+      }
+
+      .site-header h1 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .site-header .sub {
+        margin: 0.15rem 0 0;
+        font-size: 0.75rem;
+        color: var(--muted-foreground);
+      }
+
+      .demo-badge {
+        display: inline-block;
+        padding: 0.3rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.6875rem;
+        font-weight: 700;
+        color: hsl(0, 72%, 38%);
+        background: hsl(0, 100%, 97%);
+        border: 2px solid hsl(0, 65%, 65%);
+        white-space: nowrap;
+      }
+
+      @media (min-width: 640px) {
+        .demo-badge {
+          font-size: 0.75rem;
+          padding: 0.35rem 0.85rem;
+        }
+      }
+
+      .header-actions {
+        justify-self: end;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      .icon-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        padding: 0;
+        border: none;
+        border-radius: 0.375rem;
+        background: transparent;
+        color: var(--foreground);
+        text-decoration: none;
+      }
+
+      .icon-btn:hover {
+        background: var(--muted);
+      }
+
+      .icon-btn svg {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .badge-count {
+        position: absolute;
+        top: -0.15rem;
+        right: -0.15rem;
+        min-width: 1.25rem;
+        height: 1.25rem;
+        padding: 0 0.25rem;
+        border-radius: 999px;
+        background: var(--destructive);
+        color: var(--destructive-foreground);
+        font-size: 0.65rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      main.container {
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+      }
+
+      .op-tabs input.tab-radio {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+
+      .op-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .op-nav label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.85rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--muted-foreground);
+        transition: background 0.15s, border-color 0.15s, color 0.15s;
+      }
+
+      .op-nav label svg {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      #op-cal:checked ~ .op-nav label[for="op-cal"],
+      #op-apt:checked ~ .op-nav label[for="op-apt"],
+      #op-rec:checked ~ .op-nav label[for="op-rec"] {
+        border-color: var(--sky-300);
+        background: var(--card);
+        color: var(--foreground);
+      }
+
+      .tab-panel {
+        display: none;
+      }
+
+      #op-cal:checked ~ .panel-wrap .tab-panel--cal,
+      #op-apt:checked ~ .panel-wrap .tab-panel--apt,
+      #op-rec:checked ~ .panel-wrap .tab-panel--rec {
+        display: block;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 0.75rem;
+        border: 1px solid var(--border);
+      }
+
+      .cal-wrap {
+        padding: 1.5rem;
+      }
+
+      .month-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.5rem;
+      }
+
+      .month-nav span {
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .nav-inert {
+        display: inline-flex;
+        width: 2.25rem;
+        height: 2.25rem;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.375rem;
+        opacity: 0.45;
+        cursor: default;
+      }
+
+      .cal-dow {
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--muted-foreground);
+        padding: 0.25rem 0;
+      }
+
+      .cal-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.25rem;
+      }
+
+      .cal-cell {
+        height: 2.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem;
+        border-radius: 0.5rem;
+        color: var(--foreground);
+      }
+
+      .cal-cell.scheduled {
+        background: #fff;
+        border: 2px solid var(--sky-300);
+        font-weight: 600;
+      }
+
+      .cal-cell.muted {
+        color: var(--muted-foreground);
+      }
+
+      .legend {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+
+      .legend-swatch {
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 0.25rem;
+        background: #fff;
+        border: 2px solid var(--sky-300);
+      }
+
+      .legend span {
+        font-size: 0.875rem;
+        color: var(--muted-foreground);
+      }
+
+      .cleaning-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        background: hsl(210 20% 98% / 0.8);
+        border: 1px solid var(--border);
+        border-radius: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .cleaning-row:last-of-type {
+        margin-bottom: 0;
+      }
+
+      .status-pill {
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.375rem;
+        white-space: nowrap;
+      }
+
+      .status-pill.ok {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .status-pill.wait {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+
+      .btn-op {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border: 2px solid var(--sky-300);
+        border-radius: 0.375rem;
+        background: #fff;
+        color: #000;
+        opacity: 0.65;
+        cursor: default;
+      }
+
+      .listings-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .listings-toolbar h2 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 700;
+      }
+
+      .toolbar-btns {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .btn-ghost-sm,
+      .btn-sky {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-radius: 0.375rem;
+        border: 1px solid var(--border);
+        background: var(--card);
+        opacity: 0.65;
+        cursor: default;
+      }
+
+      .btn-sky {
+        border: 2px solid var(--sky-300);
+        background: #fff;
+        color: #000;
+      }
+
+      .apt-grid {
+        display: grid;
+        gap: 1rem;
+      }
+
+      @media (min-width: 768px) {
+        .apt-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      .apt-card {
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        border: 1px solid var(--border);
+        background: var(--card);
+        box-shadow: var(--shadow-card);
+      }
+
+      .apt-card h3 {
+        margin: 0 0 0.25rem;
+        font-size: 1.125rem;
+        font-weight: 700;
+      }
+
+      .info-row {
+        display: flex;
+        align-items: flex-start;
+        margin-top: 0.35rem;
+      }
+
+      .info-row .lbl {
+        width: 7.5rem;
+        flex-shrink: 0;
+        font-size: 0.875rem;
+        color: var(--muted-foreground);
+      }
+
+      .info-row .val {
+        flex: 1;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      .muted-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        color: var(--muted-foreground);
+        margin-top: 0.35rem;
+      }
+
+      .muted-row svg {
+        width: 1rem;
+        height: 1rem;
+        flex-shrink: 0;
+      }
+
+      .rec-toolbar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1rem;
+      }
+
+      .rec-card {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+        border-radius: 0.5rem;
+        border: 1px solid var(--border);
+        background: var(--card);
+        box-shadow: var(--shadow-card);
+      }
+
+      .rec-card h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+      }
+
+      .rec-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+        color: var(--muted-foreground);
+        margin-top: 0.35rem;
+      }
+
+      .rec-meta svg {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .rec-price {
+        margin-top: 0.75rem;
+        font-size: 1.125rem;
+        font-weight: 700;
+      }
+
+      .btn-dl {
+        margin-top: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+        border: 1px solid var(--border);
+        border-radius: 0.375rem;
+        background: var(--card);
+        opacity: 0.6;
+        cursor: default;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container row">
+        <div class="header-title">
+          <h1 class="font-display">Operator control panel</h1>
+          <p class="sub">Manage your properties</p>
+        </div>
+        <div class="header-demo">
+          <span class="demo-badge" role="status" title="Static demo">Demo</span>
+        </div>
+        <div class="header-actions">
+          <a href="#" class="icon-btn" aria-label="Notifications (demo)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+              <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+            </svg>
+            <span class="badge-count">2</span>
+          </a>
+          <a href="#" class="icon-btn" aria-label="Messages (demo)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+          </a>
+          <a href="index_en.html" class="icon-btn" aria-label="Home" title="Log out">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" x2="9" y1="12" y2="12" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container op-tabs">
+      <input class="tab-radio" type="radio" name="op-tab" id="op-cal" checked />
+      <input class="tab-radio" type="radio" name="op-tab" id="op-apt" />
+      <input class="tab-radio" type="radio" name="op-tab" id="op-rec" />
+
+      <div class="op-nav">
+        <label for="op-cal">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+          Calendar
+        </label>
+        <label for="op-apt">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Your properties
+        </label>
+        <label for="op-rec">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></svg>
+          Receipts
+        </label>
+      </div>
+
+      <div class="panel-wrap">
+        <div class="tab-panel tab-panel--cal">
+          <h2 class="font-display" style="margin:0 0 1rem;font-size:1.125rem;font-weight:700">Cleaning calendar</h2>
+          <div class="card cal-wrap">
+            <div class="month-nav">
+              <span class="nav-inert" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+              </span>
+              <span>March 2026</span>
+              <span class="nav-inert" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+              </span>
+            </div>
+            <div class="cal-grid" style="margin-bottom: 0.5rem">
+              <div class="cal-dow">Mo</div>
+              <div class="cal-dow">Tu</div>
+              <div class="cal-dow">We</div>
+              <div class="cal-dow">Th</div>
+              <div class="cal-dow">Fr</div>
+              <div class="cal-dow">Sa</div>
+              <div class="cal-dow">Su</div>
+            </div>
+            <div class="cal-grid">
+              <div class="cal-cell"></div><div class="cal-cell"></div><div class="cal-cell"></div><div class="cal-cell"></div><div class="cal-cell"></div><div class="cal-cell"></div>
+              <div class="cal-cell muted">1</div>
+              <div class="cal-cell muted">2</div><div class="cal-cell muted">3</div><div class="cal-cell scheduled">4</div><div class="cal-cell muted">5</div><div class="cal-cell scheduled">6</div><div class="cal-cell muted">7</div><div class="cal-cell muted">8</div>
+              <div class="cal-cell scheduled">9</div><div class="cal-cell muted">10</div><div class="cal-cell muted">11</div><div class="cal-cell muted">12</div><div class="cal-cell muted">13</div><div class="cal-cell muted">14</div><div class="cal-cell scheduled">15</div>
+              <div class="cal-cell scheduled">16</div><div class="cal-cell muted">17</div><div class="cal-cell muted">18</div><div class="cal-cell muted">19</div><div class="cal-cell muted">20</div><div class="cal-cell muted">21</div><div class="cal-cell muted">22</div>
+              <div class="cal-cell scheduled">23</div><div class="cal-cell muted">24</div><div class="cal-cell muted">25</div><div class="cal-cell scheduled">26</div><div class="cal-cell muted">27</div><div class="cal-cell scheduled">28</div><div class="cal-cell muted">29</div>
+              <div class="cal-cell muted">30</div><div class="cal-cell muted">31</div><div class="cal-cell"></div><div class="cal-cell"></div><div class="cal-cell"></div><div class="cal-cell"></div><div class="cal-cell"></div>
+            </div>
+            <div class="legend">
+              <div class="legend-swatch" aria-hidden="true"></div>
+              <span>Scheduled cleaning</span>
+            </div>
+          </div>
+
+          <div class="card cal-wrap" style="margin-top: 1rem">
+            <h3 class="font-display" style="margin:0 0 0.75rem;font-size:1rem;font-weight:600">March 16, 2026</h3>
+            <p style="margin:0 0 0.5rem;font-size:0.875rem;color:var(--muted-foreground)">Scheduled cleanings:</p>
+            <div class="cleaning-row">
+              <div>
+                <p style="margin:0;font-weight:500">Sunset Villa</p>
+                <p style="margin:0.15rem 0 0;font-size:0.875rem;color:var(--muted-foreground)">Standard turnover clean · 11:00 · 55 €</p>
+              </div>
+              <span class="status-pill ok">Confirmed</span>
+            </div>
+            <div class="cleaning-row">
+              <div>
+                <p style="margin:0;font-weight:500">Seaside Apartment</p>
+                <p style="margin:0.15rem 0 0;font-size:0.875rem;color:var(--muted-foreground)">Light check-in prep · 09:30 · 38 €</p>
+              </div>
+              <span class="status-pill wait">Awaiting confirmation</span>
+            </div>
+            <button type="button" class="btn-op" disabled aria-disabled="true">Schedule cleaning</button>
+          </div>
+        </div>
+
+        <div class="tab-panel tab-panel--apt">
+          <div class="listings-toolbar">
+            <h2 class="font-display">My listings</h2>
+            <div class="toolbar-btns">
+              <span class="btn-ghost-sm" title="Static demo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+                Refresh
+              </span>
+              <span class="btn-sky" title="Static demo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                Add listing
+              </span>
+            </div>
+          </div>
+          <div class="apt-grid">
+            <div class="apt-card">
+              <h3 class="font-display">Sunset Villa</h3>
+              <div class="muted-row">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Neorio 14, Chania
+              </div>
+              <div class="info-row"><span class="lbl">Type</span><span class="val">Villa</span></div>
+              <div class="info-row"><span class="lbl">Location</span><span class="val">Chania, Crete</span></div>
+              <div class="info-row"><span class="lbl">Check-in</span><span class="val">15:00</span></div>
+              <div class="info-row"><span class="lbl">Check-out</span><span class="val">11:00</span></div>
+            </div>
+            <div class="apt-card">
+              <h3 class="font-display">Seaside Apartment</h3>
+              <div class="muted-row">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                Paraliaki 8, Heraklion
+              </div>
+              <div class="info-row"><span class="lbl">Type</span><span class="val">Apartment</span></div>
+              <div class="info-row"><span class="lbl">Location</span><span class="val">Heraklion, Crete</span></div>
+              <div class="info-row"><span class="lbl">Check-in</span><span class="val">16:00</span></div>
+              <div class="info-row"><span class="lbl">Check-out</span><span class="val">10:00</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel tab-panel--rec">
+          <div class="rec-toolbar">
+            <span class="btn-ghost-sm" title="Static demo">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+              Refresh
+            </span>
+          </div>
+          <div class="rec-card">
+            <h3 class="font-display">Klinly Clean — Chania</h3>
+            <div class="rec-meta">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 2v20"/></svg>
+              <span>Sunset Villa</span>
+            </div>
+            <div class="rec-meta">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+              <span>March 16, 2026 at 11:00</span>
+            </div>
+            <div class="rec-meta">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></svg>
+              <span>Receipt number: invoice_202603161045</span>
+            </div>
+            <p class="rec-price">55 €</p>
+            <span class="btn-dl" title="Static demo">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              Download PDF
+            </span>
+          </div>
+          <div class="rec-card">
+            <h3 class="font-display">Aegean Services</h3>
+            <div class="rec-meta">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 2v20"/></svg>
+              <span>Seaside Apartment</span>
+            </div>
+            <div class="rec-meta">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+              <span>March 9, 2026 at 10:00</span>
+            </div>
+            <div class="rec-meta">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></svg>
+              <span>Receipt number: invoice_202603091012</span>
+            </div>
+            <p class="rec-price">42 €</p>
+            <span class="btn-dl" title="Static demo">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              Download PDF
+            </span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

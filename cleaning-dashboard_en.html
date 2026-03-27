@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Klinly — Cleaning company</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' font-weight='bold' font-family='system-ui,sans-serif'%3EK%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --background: hsl(210, 20%, 98%);
+        --foreground: hsl(200, 24%, 12%);
+        --muted: hsl(210, 15%, 95%);
+        --muted-foreground: hsl(200, 10%, 45%);
+        --card: #fff;
+        --border: hsl(214, 20%, 88%);
+        --destructive: hsl(0, 84%, 60%);
+        --destructive-foreground: #fff;
+        --ring: hsl(173, 80%, 26%);
+        --shadow-card: 0 2px 12px -2px hsl(200 24% 12% / 0.1);
+        --shadow-elevated: 0 8px 30px -6px hsl(200 24% 12% / 0.15);
+        --sky-300: #7dd3fc;
+        --sky-50: #f0f9ff;
+        --sky-600: #0284c7;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Inter", system-ui, sans-serif;
+        background: var(--background);
+        color: var(--foreground);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      .font-display {
+        font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 64rem;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: var(--card);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .site-header .row {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 0.5rem 0.75rem;
+        padding: 1rem;
+      }
+
+      .header-title {
+        justify-self: start;
+        min-width: 0;
+      }
+
+      .header-demo {
+        justify-self: center;
+      }
+
+      .site-header h1 {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .site-header .sub {
+        margin: 0.15rem 0 0;
+        font-size: 0.75rem;
+        color: var(--muted-foreground);
+      }
+
+      .demo-badge {
+        display: inline-block;
+        padding: 0.3rem 0.65rem;
+        border-radius: 999px;
+        font-size: 0.6875rem;
+        font-weight: 700;
+        color: hsl(0, 72%, 38%);
+        background: hsl(0, 100%, 97%);
+        border: 2px solid hsl(0, 65%, 65%);
+        white-space: nowrap;
+      }
+
+      @media (min-width: 640px) {
+        .demo-badge {
+          font-size: 0.75rem;
+          padding: 0.35rem 0.85rem;
+        }
+      }
+
+      .header-actions {
+        justify-self: end;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        flex-shrink: 0;
+      }
+
+      .icon-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        padding: 0;
+        border: none;
+        border-radius: 0.375rem;
+        background: transparent;
+        color: var(--foreground);
+        cursor: default;
+        text-decoration: none;
+      }
+
+      .icon-btn:hover {
+        background: var(--muted);
+      }
+
+      .icon-btn svg {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .badge-count {
+        position: absolute;
+        top: -0.15rem;
+        right: -0.15rem;
+        min-width: 1.25rem;
+        height: 1.25rem;
+        padding: 0 0.25rem;
+        border-radius: 999px;
+        background: var(--destructive);
+        color: var(--destructive-foreground);
+        font-size: 0.65rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      main.container {
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+      }
+
+      /* CSS-only tabs */
+      .clean-tabs input.tab-radio {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+
+      .section-intro {
+        margin-bottom: 1.5rem;
+      }
+
+      .section-intro h2 {
+        margin: 0 0 0.25rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+      }
+
+      .section-intro p {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--muted-foreground);
+      }
+
+      .tabs-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        padding: 0.25rem;
+        margin-bottom: 1.5rem;
+        background: var(--muted);
+        border-radius: 0.375rem;
+        width: 100%;
+      }
+
+      .tabs-nav label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--muted-foreground);
+        border-radius: 0.25rem;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+      }
+
+      .tabs-nav label svg {
+        width: 1rem;
+        height: 1rem;
+        flex-shrink: 0;
+      }
+
+      #tab-calendar:checked ~ .tabs-nav label[for="tab-calendar"],
+      #tab-preferences:checked ~ .tabs-nav label[for="tab-preferences"],
+      #tab-available:checked ~ .tabs-nav label[for="tab-available"],
+      #tab-postings:checked ~ .tabs-nav label[for="tab-postings"],
+      #tab-employees:checked ~ .tabs-nav label[for="tab-employees"],
+      #tab-payments:checked ~ .tabs-nav label[for="tab-payments"] {
+        background: var(--card);
+        color: var(--foreground);
+        box-shadow: 0 1px 2px hsl(200 24% 12% / 0.08);
+      }
+
+      .tab-panel {
+        display: none;
+      }
+
+      #tab-calendar:checked ~ .panel-wrap .tab-panel--calendar,
+      #tab-preferences:checked ~ .panel-wrap .tab-panel--preferences,
+      #tab-available:checked ~ .panel-wrap .tab-panel--available,
+      #tab-postings:checked ~ .panel-wrap .tab-panel--postings,
+      #tab-employees:checked ~ .panel-wrap .tab-panel--employees,
+      #tab-payments:checked ~ .panel-wrap .tab-panel--payments {
+        display: block;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 1rem;
+        box-shadow: var(--shadow-card);
+      }
+
+      .card:hover {
+        box-shadow: var(--shadow-elevated);
+      }
+
+      .calendar-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 1024px) {
+        .calendar-layout {
+          flex-direction: row;
+          align-items: flex-start;
+        }
+      }
+
+      .calendar-box {
+        flex-shrink: 0;
+        padding: 1.5rem;
+      }
+
+      .calendar-box h3 {
+        margin: 0 0 1rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        text-align: center;
+      }
+
+      .cal-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 2.25rem);
+        gap: 0.25rem;
+        justify-content: center;
+      }
+
+      .cal-dow {
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: var(--muted-foreground);
+        text-align: center;
+        padding: 0.25rem 0;
+      }
+
+      .cal-day {
+        height: 2.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8125rem;
+        border-radius: 0.25rem;
+        color: var(--muted-foreground);
+      }
+
+      .cal-day.num {
+        color: var(--foreground);
+        cursor: default;
+      }
+
+      .cal-day.today {
+        background: var(--sky-300);
+        color: var(--foreground);
+        font-weight: 600;
+      }
+
+      .cal-day.selected {
+        background: #fff;
+        border: 2px solid #000;
+        font-weight: 600;
+      }
+
+      .cal-day.booked {
+        background: #fff;
+        border: 2px solid var(--sky-300);
+        font-weight: 600;
+      }
+
+      .cal-side {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .cal-side h3 {
+        margin: 0 0 1rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+      }
+
+      .booking-card {
+        padding: 1.5rem;
+      }
+
+      .booking-card h4 {
+        margin: 0 0 0.25rem;
+        font-size: 1.125rem;
+        font-weight: 700;
+      }
+
+      .pill {
+        display: inline-block;
+        padding: 0.125rem 0.5rem;
+        font-size: 0.75rem;
+        border: 1px solid var(--border);
+        border-radius: 0.25rem;
+        margin-top: 0.25rem;
+      }
+
+      .muted-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+        color: var(--muted-foreground);
+      }
+
+      .muted-row svg {
+        width: 1rem;
+        height: 1rem;
+        flex-shrink: 0;
+      }
+
+      .time-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        padding: 0.75rem;
+        background: var(--muted);
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      .btn-outline {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        width: 100%;
+        margin-top: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border: 1px solid var(--border);
+        border-radius: 0.375rem;
+        background: var(--card);
+        color: var(--foreground);
+      }
+
+      .btn-outline svg {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .empty-state {
+        padding: 2rem;
+        text-align: center;
+      }
+
+      .empty-state svg {
+        width: 2.5rem;
+        height: 2.5rem;
+        color: var(--muted-foreground);
+        margin: 0 auto 0.75rem;
+        display: block;
+      }
+
+      .empty-state p {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--muted-foreground);
+      }
+
+      .pref-grid {
+        display: grid;
+        gap: 1rem;
+      }
+
+      @media (min-width: 640px) {
+        .pref-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      .pref-card {
+        padding: 1.25rem;
+        border: 1px solid var(--border);
+        border-radius: 0.75rem;
+      }
+
+      .pref-card h4 {
+        margin: 0 0 0.25rem;
+        font-size: 1rem;
+      }
+
+      .pref-card .desc {
+        font-size: 0.8125rem;
+        color: var(--muted-foreground);
+        margin-bottom: 1rem;
+      }
+
+      .price-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        font-size: 0.8125rem;
+        padding: 0.35rem 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .price-row:last-child {
+        border-bottom: none;
+      }
+
+      .fake-input {
+        width: 4.5rem;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8125rem;
+        border: 1px solid var(--border);
+        border-radius: 0.25rem;
+        background: var(--muted);
+        color: var(--muted-foreground);
+        text-align: right;
+      }
+
+      .job-card {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .job-card .head {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .badge-green {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        background: hsl(142, 76%, 92%);
+        color: hsl(142, 76%, 22%);
+        border-radius: 0.25rem;
+      }
+
+      .toolbar {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1rem;
+      }
+
+      .btn-sm {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-radius: 0.375rem;
+        border: 1px solid var(--border);
+        background: var(--card);
+      }
+
+      .emp-card {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .emp-head {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .avatar {
+        width: 4rem;
+        height: 4rem;
+        border-radius: 999px;
+        background: var(--muted);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .avatar svg {
+        width: 2rem;
+        height: 2rem;
+      }
+
+      .status {
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.125rem 0.5rem;
+        border-radius: 0.25rem;
+      }
+
+      .status.avail {
+        background: #22c55e;
+        color: #fff;
+      }
+
+      .status.busy {
+        background: #eab308;
+        color: #1a1a1a;
+      }
+
+      .contact-grid {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      @media (min-width: 640px) {
+        .contact-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .contact-cell {
+        padding: 0.75rem;
+        background: var(--muted);
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+
+      .contact-cell .lbl {
+        font-size: 0.75rem;
+        color: var(--muted-foreground);
+        margin: 0 0 0.15rem;
+      }
+
+      .contact-cell .val {
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin: 0;
+      }
+
+      .spec-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-bottom: 1rem;
+      }
+
+      .spec-tags span {
+        font-size: 0.75rem;
+        padding: 0.125rem 0.5rem;
+        border: 1px solid var(--border);
+        border-radius: 0.25rem;
+      }
+
+      .shift-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem;
+        background: var(--muted);
+        border-radius: 0.5rem;
+        margin-bottom: 0.35rem;
+        font-size: 0.875rem;
+      }
+
+      .emp-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+      }
+
+      .emp-actions .btn-outline {
+        flex: 1;
+        margin-top: 0;
+        min-width: 6rem;
+      }
+
+      .pay-card {
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+
+      .pay-card .meta {
+        font-size: 0.8125rem;
+        color: var(--muted-foreground);
+      }
+
+      .pay-card .amount {
+        font-size: 1.125rem;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container row">
+        <div class="header-title">
+          <h1 class="font-display">Cleaning company</h1>
+          <p class="sub">Manage your services</p>
+        </div>
+        <div class="header-demo">
+          <span class="demo-badge" role="status" title="Static demo">Demo</span>
+        </div>
+        <div class="header-actions">
+          <a href="#" class="icon-btn" aria-label="Notifications (demo)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+              <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+            </svg>
+            <span class="badge-count">3</span>
+          </a>
+          <a href="#" class="icon-btn" aria-label="Messages (demo)">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+          </a>
+          <a href="index_en.html" class="icon-btn" aria-label="Home" title="Log out">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" x2="9" y1="12" y2="12" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container clean-tabs">
+      <input class="tab-radio" type="radio" name="clean-tab" id="tab-calendar" checked />
+      <input class="tab-radio" type="radio" name="clean-tab" id="tab-preferences" />
+      <input class="tab-radio" type="radio" name="clean-tab" id="tab-available" />
+      <input class="tab-radio" type="radio" name="clean-tab" id="tab-postings" />
+      <input class="tab-radio" type="radio" name="clean-tab" id="tab-employees" />
+      <input class="tab-radio" type="radio" name="clean-tab" id="tab-payments" />
+
+      <div class="tabs-nav">
+        <label for="tab-calendar">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
+          Calendar
+        </label>
+        <label for="tab-preferences">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Preferences
+        </label>
+        <label for="tab-available">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          Available jobs
+        </label>
+        <label for="tab-postings">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Job postings
+        </label>
+        <label for="tab-employees">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg>
+          Staff
+        </label>
+        <label for="tab-payments">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          Revenue
+        </label>
+      </div>
+
+      <div class="panel-wrap">
+        <div class="tab-panel tab-panel--calendar">
+          <div class="section-intro">
+            <h2 class="font-display">Calendar</h2>
+            <p>Select a date to view scheduled cleanings</p>
+          </div>
+          <div class="calendar-layout">
+            <div class="card calendar-box">
+              <h3 class="font-display">March 2026</h3>
+              <div class="cal-grid" aria-hidden="true">
+                <div class="cal-dow">Mon</div>
+                <div class="cal-dow">Tue</div>
+                <div class="cal-dow">Wed</div>
+                <div class="cal-dow">Thu</div>
+                <div class="cal-dow">Fri</div>
+                <div class="cal-dow">Sat</div>
+                <div class="cal-dow">Sun</div>
+                <div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div>
+                <div class="cal-day num">1</div>
+                <div class="cal-day num">2</div><div class="cal-day num">3</div><div class="cal-day num">4</div><div class="cal-day num">5</div><div class="cal-day num">6</div><div class="cal-day num">7</div><div class="cal-day num">8</div>
+                <div class="cal-day num">9</div><div class="cal-day num">10</div><div class="cal-day num">11</div><div class="cal-day num">12</div><div class="cal-day num">13</div><div class="cal-day num">14</div><div class="cal-day num">15</div>
+                <div class="cal-day num booked">16</div><div class="cal-day num">17</div><div class="cal-day num">18</div><div class="cal-day num">19</div><div class="cal-day num">20</div><div class="cal-day num">21</div><div class="cal-day num">22</div>
+                <div class="cal-day num">23</div><div class="cal-day num">24</div><div class="cal-day num">25</div><div class="cal-day num">26</div><div class="cal-day num today selected">27</div><div class="cal-day num">28</div><div class="cal-day num">29</div>
+                <div class="cal-day num">30</div><div class="cal-day num">31</div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div><div class="cal-day"></div>
+              </div>
+            </div>
+            <div class="cal-side">
+              <h3 class="font-display">Scheduled cleanings — March 27, 2026</h3>
+              <div class="card booking-card">
+                <div class="flex-wrap">
+                  <h4 class="font-display">Villa Kriti — Old Town</h4>
+                  <span class="pill">Standard turnover clean</span>
+                  <div class="muted-row">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Chania, Crete
+                  </div>
+                </div>
+                <div class="time-bar">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  10:00
+                </div>
+                <div style="margin-top:0.75rem;padding:0.75rem;background:#eff6ff;border:1px solid #bfdbfe;border-radius:0.5rem;font-size:0.875rem;color:#1e3a8a">
+                  <strong>Assigned to:</strong> Giannis Papadopoulos
+                </div>
+                <button type="button" class="btn-outline" disabled aria-disabled="true">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  Assign to
+                </button>
+                <p style="margin:0.75rem 0 0;font-size:0.875rem;color:var(--muted-foreground);font-style:italic">Please leave the keys in the entrance drawer.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel tab-panel--preferences">
+          <div class="section-intro">
+            <h2 class="font-display">Preferences</h2>
+            <p>Choose your preferences for property types</p>
+          </div>
+          <div class="pref-grid">
+            <div class="pref-card card">
+              <h4 class="font-display">Studio</h4>
+              <p class="desc">1 room, up to 2 beds, 1 bathroom</p>
+              <div class="price-row"><span>Standard turnover clean</span><span class="fake-input" aria-readonly="true">45 €</span></div>
+              <div class="price-row"><span>Deep reset clean</span><span class="fake-input" aria-readonly="true">65 €</span></div>
+              <div class="price-row"><span>Light check-in prep</span><span class="fake-input" aria-readonly="true">30 €</span></div>
+            </div>
+            <div class="pref-card card">
+              <h4 class="font-display">Small Airbnb</h4>
+              <p class="desc">1–2 rooms, up to 4 beds, 1 bathroom</p>
+              <div class="price-row"><span>Standard turnover clean</span><span class="fake-input" aria-readonly="true">55 €</span></div>
+              <div class="price-row"><span>Deep reset clean</span><span class="fake-input" aria-readonly="true">80 €</span></div>
+              <div class="price-row"><span>Light check-in prep</span><span class="fake-input" aria-readonly="true">38 €</span></div>
+            </div>
+            <div class="pref-card card">
+              <h4 class="font-display">Medium homes</h4>
+              <p class="desc">2–3 rooms, up to 6 beds, 2 bathrooms</p>
+              <div class="price-row"><span>Standard turnover clean</span><span class="fake-input" aria-readonly="true">75 €</span></div>
+              <div class="price-row"><span>Deep reset clean</span><span class="fake-input" aria-readonly="true">105 €</span></div>
+              <div class="price-row"><span>Light check-in prep</span><span class="fake-input" aria-readonly="true">48 €</span></div>
+            </div>
+            <div class="pref-card card">
+              <h4 class="font-display">Large homes</h4>
+              <p class="desc">3–4 rooms, up to 8 beds, 2–3 bathrooms</p>
+              <div class="price-row"><span>Standard turnover clean</span><span class="fake-input" aria-readonly="true">95 €</span></div>
+              <div class="price-row"><span>Deep reset clean</span><span class="fake-input" aria-readonly="true">130 €</span></div>
+              <div class="price-row"><span>Light check-in prep</span><span class="fake-input" aria-readonly="true">60 €</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel tab-panel--available">
+          <div class="section-intro">
+            <h2 class="font-display">Available jobs</h2>
+            <p>Properties looking for cleaning services</p>
+          </div>
+          <div class="card job-card">
+            <div class="head">
+              <div>
+                <h3 class="font-display" style="margin:0 0 0.5rem;font-size:1.125rem">Seaside Apartment 3B</h3>
+                <span class="pill">Deep reset clean</span>
+                <div class="muted-row">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Rethymno
+                </div>
+                <div class="muted-row" style="margin-top:0.35rem">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                  2 beds · 1 bathroom
+                </div>
+                <div class="muted-row" style="margin-top:0.35rem">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  March 29, 2026 — 2:00 PM
+                </div>
+              </div>
+              <div>
+                <p style="margin:0;font-size:0.875rem;color:var(--muted-foreground)">Estimated payout</p>
+                <p style="margin:0.25rem 0 0;font-size:1.25rem;font-weight:700">80 €</p>
+              </div>
+            </div>
+            <span class="badge-green">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+              Available
+            </span>
+            <button type="button" class="btn-outline" style="margin-top:1rem" disabled aria-disabled="true">Accept job</button>
+          </div>
+        </div>
+
+        <div class="tab-panel tab-panel--postings">
+          <div class="section-intro">
+            <h2 class="font-display">Job postings</h2>
+            <p>Manage your job postings</p>
+          </div>
+          <div class="toolbar">
+            <span class="btn-sm" style="opacity:0.6;cursor:default" title="Static demo">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              New posting
+            </span>
+          </div>
+          <div class="card job-card">
+            <h3 class="font-display" style="margin:0 0 0.5rem;font-size:1.125rem">Cleaner wanted — Chania</h3>
+            <p style="margin:0 0 1rem;font-size:0.875rem;color:var(--muted-foreground)">Full-time · Morning shift (8–16) · Standard + deep cleaning</p>
+            <div class="muted-row">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              Chania, Nea Chora
+            </div>
+            <p style="margin:0.75rem 0 0;font-size:0.875rem;font-weight:600">12 € / hour</p>
+          </div>
+        </div>
+
+        <div class="tab-panel tab-panel--employees">
+          <div class="section-intro">
+            <h2 class="font-display">Staff</h2>
+            <p>Manage your company’s staff</p>
+          </div>
+          <div class="toolbar">
+            <span class="btn-sm" style="opacity:0.6;cursor:default" title="Static demo">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg>
+              Add employee
+            </span>
+          </div>
+
+          <div class="card emp-card">
+            <div class="emp-head">
+              <div class="avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+              <div>
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.35rem">
+                  <h3 class="font-display" style="margin:0;font-size:1.125rem">Maria Papadopoulou</h3>
+                  <span class="status avail">Available</span>
+                </div>
+                <p style="margin:0;font-size:0.875rem;color:var(--muted-foreground)">
+                  <span style="color:#eab308">★</span> 4.8 · 5 years experience
+                </p>
+                <div class="muted-row" style="margin-top:0.35rem">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Chania, Crete
+                </div>
+              </div>
+            </div>
+            <div class="contact-grid">
+              <div class="contact-cell">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1rem;height:1rem;flex-shrink:0;color:var(--muted-foreground)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <div>
+                  <p class="lbl">Phone</p>
+                  <p class="val">+30 694 123 4567</p>
+                </div>
+              </div>
+              <div class="contact-cell">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1rem;height:1rem;flex-shrink:0;color:var(--muted-foreground)"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <div>
+                  <p class="lbl">Email</p>
+                  <p class="val">maria.papadopoulou@example.com</p>
+                </div>
+              </div>
+            </div>
+            <p class="lbl" style="margin-bottom:0.35rem">Specialty</p>
+            <div class="spec-tags">
+              <span>Studio</span><span>Small Airbnbs</span>
+            </div>
+            <p style="margin:0 0 0.5rem;font-size:0.875rem;font-weight:500">Weekly schedule</p>
+            <div class="shift-row"><span>Monday</span><span style="color:var(--muted-foreground)">08:00 - 16:00</span></div>
+            <div class="shift-row"><span>Tuesday</span><span style="color:var(--muted-foreground)">08:00 - 16:00</span></div>
+            <div class="emp-actions">
+              <span class="btn-outline" style="cursor:default;opacity:0.85">Call</span>
+              <span class="btn-outline" style="cursor:default;opacity:0.85">Email</span>
+              <span class="btn-outline" style="cursor:default;opacity:0.85;background:var(--foreground);color:#fff;border-color:var(--foreground)">View profile</span>
+            </div>
+          </div>
+
+          <div class="card emp-card">
+            <div class="emp-head">
+              <div class="avatar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+              <div>
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.5rem;margin-bottom:0.35rem">
+                  <h3 class="font-display" style="margin:0;font-size:1.125rem">Giannis Kostopoulos</h3>
+                  <span class="status busy">Busy</span>
+                </div>
+                <p style="margin:0;font-size:0.875rem;color:var(--muted-foreground)">
+                  <span style="color:#eab308">★</span> 4.9 · 7 years experience
+                </p>
+                <div class="muted-row" style="margin-top:0.35rem">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Heraklion, Crete
+                </div>
+              </div>
+            </div>
+            <div class="contact-grid">
+              <div class="contact-cell">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1rem;height:1rem;flex-shrink:0;color:var(--muted-foreground)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                <div>
+                  <p class="lbl">Phone</p>
+                  <p class="val">+30 694 234 5678</p>
+                </div>
+              </div>
+              <div class="contact-cell">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1rem;height:1rem;flex-shrink:0;color:var(--muted-foreground)"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <div>
+                  <p class="lbl">Email</p>
+                  <p class="val">giannis.kostopoulos@example.com</p>
+                </div>
+              </div>
+            </div>
+            <p class="lbl" style="margin-bottom:0.35rem">Specialty</p>
+            <div class="spec-tags">
+              <span>Medium homes</span><span>Large homes</span><span>Villas</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-panel tab-panel--payments">
+          <div class="section-intro">
+            <h2 class="font-display">Revenue</h2>
+            <p>Manage revenue from properties</p>
+          </div>
+          <div class="card pay-card">
+            <div>
+              <p style="margin:0;font-weight:600">Villa Kriti — Old Town</p>
+              <p class="meta" style="margin:0.35rem 0 0">March 15, 2026 · 11:30</p>
+              <p class="meta" style="margin:0.15rem 0 0">Invoice #INV-2026-0142</p>
+            </div>
+            <div style="text-align:right">
+              <p class="amount">55 €</p>
+              <span class="btn-sm" style="margin-top:0.5rem;opacity:0.6;cursor:default;display:inline-flex">Download PDF</span>
+            </div>
+          </div>
+          <div class="card pay-card">
+            <div>
+              <p style="margin:0;font-weight:600">Seaside Loft</p>
+              <p class="meta" style="margin:0.35rem 0 0">March 3, 2026 · 09:00</p>
+              <p class="meta" style="margin:0.15rem 0 0">Invoice #INV-2026-0098</p>
+            </div>
+            <div style="text-align:right">
+              <p class="amount">45 €</p>
+              <span class="btn-sm" style="margin-top:0.5rem;opacity:0.6;cursor:default;display:inline-flex">Download PDF</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
