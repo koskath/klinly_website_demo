@@ -3,8 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Klinly</title>
-    <meta name="description" content="Hospitality operations, simplified" />
+    <title>Klinly — Property cleaning, simple and reliable</title>
+    <meta
+      name="description"
+      content="Klinly connects property managers with cleaning services. Instant payment, reliable guest turnover."
+    />
     <link
       rel="icon"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90' font-weight='bold' font-family='system-ui,sans-serif'%3EK%3C/text%3E%3C/svg%3E"
@@ -19,9 +22,15 @@
       :root {
         --foreground: hsl(200, 24%, 12%);
         --muted-foreground: hsl(200, 10%, 45%);
-        --shadow-card: 0 2px 12px -2px hsl(200 24% 12% / 0.1);
+        --shadow-card: 0 2px 12px -2px hsl(200 24% 12% / 0.08);
         --shadow-elevated: 0 8px 30px -6px hsl(200 24% 12% / 0.15);
-        --sky-border: #7dd3fc;
+        --sky-50: #f0f9ff;
+        --sky-100: #e0f2fe;
+        --sky-200: #bae6fd;
+        --sky-300: #7dd3fc;
+        --sky-500: #0ea5e9;
+        --sky-600: #0284c7;
+        --sky-700: #0369a1;
       }
 
       *,
@@ -41,6 +50,7 @@
 
       h1,
       h2,
+      h3,
       .font-display {
         font-family: "Plus Jakarta Sans", system-ui, sans-serif;
       }
@@ -50,181 +60,459 @@
         max-width: 64rem;
         margin-left: auto;
         margin-right: auto;
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
       }
 
+      /* ---- Animations ---- */
+
       @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
+        from { opacity: 0; }
+        to { opacity: 1; }
       }
 
       @keyframes slideUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: translateY(0); }
       }
 
       .animate-fade-in {
-        animation: fadeIn 0.5s ease-out forwards;
+        animation: fadeIn 0.6s ease-out forwards;
       }
 
       .animate-slide-up {
-        animation: slideUp 0.5s ease-out forwards;
+        animation: slideUp 0.6s ease-out forwards;
         opacity: 0;
       }
 
-      .header-top {
-        position: relative;
-        padding: 1.5rem 1rem;
-      }
+      .delay-1 { animation-delay: 0.1s; }
+      .delay-2 { animation-delay: 0.2s; }
+      .delay-3 { animation-delay: 0.3s; }
 
-      .lang-switch {
-        position: absolute;
-        top: 1rem;
-        left: 1rem;
-        z-index: 2;
-        display: inline-flex;
+      /* ---- Navbar ---- */
+
+      .navbar {
+        display: flex;
         align-items: center;
-        padding: 0.4rem 0.85rem;
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: var(--foreground);
-        text-decoration: none;
-        border: 2px solid var(--sky-border);
-        border-radius: 999px;
-        background: #fff;
-        box-shadow: var(--shadow-card);
-        transition: box-shadow 0.2s, transform 0.2s;
-      }
-
-      .lang-switch:hover {
-        box-shadow: var(--shadow-elevated);
-        transform: translateY(-1px);
-      }
-
-      .lang-switch:focus-visible {
-        outline: 2px solid var(--sky-border);
-        outline-offset: 2px;
-      }
-
-      .demo-badge {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        max-width: min(18rem, calc(100% - 8rem));
-        padding: 0.5rem 1rem;
-        border-radius: 999px;
-        font-size: 0.875rem;
-        font-weight: 700;
-        letter-spacing: 0.02em;
-        line-height: 1.25;
-        text-align: center;
-        color: hsl(0, 72%, 38%);
-        background: hsl(0, 100%, 97%);
-        border: 2px solid hsl(0, 65%, 65%);
-        box-shadow: 0 2px 6px hsl(0 60% 30% / 0.12);
-      }
-
-      @media (min-width: 768px) {
-        .demo-badge {
-          font-size: 1.0625rem;
-          padding: 0.55rem 1.15rem;
-          max-width: none;
-        }
+        justify-content: space-between;
+        padding: 1.25rem 0;
       }
 
       .logo {
-        display: block;
-        text-align: center;
         font-family: "Plus Jakarta Sans", system-ui, sans-serif;
-        font-size: 1.375rem;
-        font-weight: 700;
+        font-size: 1.5rem;
+        font-weight: 800;
         color: var(--foreground);
         text-decoration: none;
+        letter-spacing: -0.02em;
       }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .lang-switch {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.4rem 0.85rem;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--foreground);
+        text-decoration: none;
+        border: 1.5px solid var(--sky-300);
+        border-radius: 999px;
+        background: #fff;
+        transition: background 0.2s, border-color 0.2s;
+      }
+
+      .lang-switch:hover {
+        background: var(--sky-50);
+        border-color: var(--sky-500);
+      }
+
+      .demo-badge {
+        padding: 0.35rem 0.85rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: hsl(0, 72%, 38%);
+        background: hsl(0, 100%, 97%);
+        border: 1.5px solid hsl(0, 65%, 75%);
+      }
+
+      /* ---- Hero ---- */
 
       .hero {
         text-align: center;
-        padding: 3.15rem 1rem 3.5rem;
+        padding: 4rem 0 3rem;
       }
 
       @media (min-width: 768px) {
         .hero {
-          padding: 4.5rem 1rem 5rem;
+          padding: 6rem 0 4.5rem;
         }
       }
 
+      .hero-label {
+        display: inline-block;
+        margin-bottom: 1.25rem;
+        padding: 0.35rem 1rem;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--sky-700);
+        background: var(--sky-50);
+        border: 1px solid var(--sky-200);
+        border-radius: 999px;
+      }
+
       .hero h1 {
-        margin: 0 0 1.5rem;
-        font-size: clamp(2rem, 5vw, 3.75rem);
+        margin: 0 auto 1.5rem;
+        max-width: 48rem;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 800;
+        line-height: 1.12;
+        letter-spacing: -0.025em;
+        color: var(--foreground);
+      }
+
+      .hero-sub {
+        margin: 0 auto 2.5rem;
+        max-width: 36rem;
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        line-height: 1.65;
+        color: var(--muted-foreground);
+      }
+
+      .hero-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.85rem 2rem;
+        font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+        font-size: 1rem;
         font-weight: 700;
-        line-height: 1.15;
+        color: #fff;
+        background: var(--sky-600);
+        border: none;
+        border-radius: 0.75rem;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.15s;
+        box-shadow: 0 2px 8px hsl(200 80% 40% / 0.25);
+      }
+
+      .hero-cta:hover {
+        background: var(--sky-700);
+        transform: translateY(-1px);
+      }
+
+      .hero-cta svg {
+        width: 1.125rem;
+        height: 1.125rem;
+        transition: transform 0.2s;
+      }
+
+      .hero-cta:hover svg {
+        transform: translateX(3px);
+      }
+
+      /* ---- How it works ---- */
+
+      .section {
+        padding: 4.5rem 0;
+      }
+
+      @media (min-width: 768px) {
+        .section {
+          padding: 5.5rem 0;
+        }
+      }
+
+      .section-alt {
+        background: var(--sky-50);
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .section-header h2 {
+        margin: 0 0 0.75rem;
+        font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
         color: var(--foreground);
       }
 
-      .hero p {
-        margin: 0 auto 2rem;
-        max-width: 42rem;
-        font-size: clamp(1rem, 2.5vw, 1.25rem);
+      .section-header p {
+        margin: 0 auto;
+        max-width: 32rem;
+        font-size: 1.05rem;
         line-height: 1.6;
+        color: var(--muted-foreground);
+      }
+
+      .steps-grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 768px) {
+        .steps-grid {
+          grid-template-columns: repeat(3, 1fr);
+          gap: 2rem;
+        }
+      }
+
+      .step-card {
+        position: relative;
+        padding: 2rem 1.75rem;
+        background: #fff;
+        border: 1.5px solid var(--sky-200);
+        border-radius: 1rem;
+        box-shadow: var(--shadow-card);
+        transition: box-shadow 0.3s, transform 0.3s;
+      }
+
+      .step-card:hover {
+        box-shadow: var(--shadow-elevated);
+        transform: translateY(-4px);
+      }
+
+      .step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.25rem;
+        height: 2.25rem;
+        margin-bottom: 1rem;
+        font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+        font-size: 0.875rem;
+        font-weight: 800;
+        color: var(--sky-700);
+        background: var(--sky-100);
+        border-radius: 0.625rem;
+      }
+
+      .step-card h3 {
+        margin: 0 0 0.5rem;
+        font-size: 1.125rem;
+        font-weight: 700;
         color: var(--foreground);
       }
 
-      .main-area {
-        margin-top: -2.5rem;
-        padding-bottom: 5rem;
+      .step-card p {
+        margin: 0;
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        color: var(--muted-foreground);
+      }
+
+      /* ---- Audience cards ---- */
+
+      .audience-grid {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 768px) {
+        .audience-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 2rem;
+        }
+      }
+
+      .audience-card {
+        padding: 2.25rem 2rem;
+        border-radius: 1rem;
+        border: 1.5px solid var(--sky-200);
         background: #fff;
+        box-shadow: var(--shadow-card);
+      }
+
+      .audience-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        margin-bottom: 1.25rem;
+        background: var(--sky-100);
+        border-radius: 0.75rem;
+        color: var(--sky-700);
+      }
+
+      .audience-icon svg {
+        width: 1.375rem;
+        height: 1.375rem;
+      }
+
+      .audience-card h3 {
+        margin: 0 0 0.75rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--foreground);
+      }
+
+      .audience-card p {
+        margin: 0 0 1rem;
+        font-size: 0.9375rem;
+        line-height: 1.65;
+        color: var(--muted-foreground);
+      }
+
+      .audience-card ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .audience-card li {
+        position: relative;
+        padding-left: 1.5rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.9375rem;
+        line-height: 1.5;
+        color: var(--foreground);
+      }
+
+      .audience-card li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.45rem;
+        width: 0.5rem;
+        height: 0.5rem;
+        background: var(--sky-500);
+        border-radius: 50%;
+      }
+
+      /* ---- Payment highlight ---- */
+
+      .highlight-banner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 2.5rem 2rem;
+        text-align: center;
+        background: var(--sky-600);
+        border-radius: 1rem;
+        color: #fff;
+      }
+
+      @media (min-width: 768px) {
+        .highlight-banner {
+          flex-direction: row;
+          text-align: left;
+          padding: 2.5rem 3rem;
+          gap: 2rem;
+        }
+      }
+
+      .highlight-icon {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 3.5rem;
+        height: 3.5rem;
+        background: hsl(200 80% 55%);
+        border-radius: 1rem;
+      }
+
+      .highlight-icon svg {
+        width: 1.75rem;
+        height: 1.75rem;
+        color: #fff;
+      }
+
+      .highlight-text h3 {
+        margin: 0 0 0.35rem;
+        font-size: 1.375rem;
+        font-weight: 700;
+      }
+
+      .highlight-text p {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.6;
+        opacity: 0.9;
+      }
+
+      /* ---- Role cards / Explore section ---- */
+
+      .explore-section {
+        text-align: center;
+        padding: 5rem 0;
+      }
+
+      @media (min-width: 768px) {
+        .explore-section {
+          padding: 6rem 0;
+        }
+      }
+
+      .explore-section h2 {
+        margin: 0 0 0.75rem;
+        font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--foreground);
+      }
+
+      .explore-section > .container > p {
+        margin: 0 auto 3rem;
+        max-width: 30rem;
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: var(--muted-foreground);
       }
 
       .role-grid {
         display: grid;
         gap: 1.5rem;
-        max-width: 64rem;
-        margin: 0 auto;
       }
 
       @media (min-width: 768px) {
         .role-grid {
           grid-template-columns: repeat(3, 1fr);
+          gap: 2rem;
         }
       }
 
       .role-card {
         position: relative;
         display: flex;
-        min-height: 100px;
+        min-height: 110px;
         flex-direction: column;
         justify-content: center;
-        padding: 1.5rem;
+        padding: 1.75rem 1.5rem;
         text-align: center;
         text-decoration: none;
         color: inherit;
         background: #fff;
-        border: 2px solid var(--sky-border);
+        border: 1.5px solid var(--sky-200);
         border-radius: 1rem;
         box-shadow: var(--shadow-card);
         cursor: pointer;
-        transition: box-shadow 0.3s, transform 0.3s;
+        transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
       }
 
       .role-card:hover {
         box-shadow: var(--shadow-elevated);
-        transform: translateY(-8px);
+        transform: translateY(-6px);
+        border-color: var(--sky-500);
       }
 
-      .role-card h2 {
+      .role-card h3 {
         margin: 0;
-        font-size: 1.25rem;
+        font-size: 1.125rem;
         font-weight: 700;
         color: var(--foreground);
         transition: opacity 0.3s;
@@ -237,15 +525,15 @@
         align-items: center;
         justify-content: center;
         font-family: "Plus Jakarta Sans", system-ui, sans-serif;
-        font-size: 1.875rem;
+        font-size: 1.5rem;
         font-weight: 700;
-        color: #000;
+        color: var(--sky-700);
         opacity: 0;
         transition: opacity 0.3s;
         pointer-events: none;
       }
 
-      .role-card:hover h2 {
+      .role-card:hover h3 {
         opacity: 0;
       }
 
@@ -253,38 +541,35 @@
         opacity: 1;
       }
 
-      .role-card.delay-1 {
-        animation-delay: 0.1s;
-      }
-
-      .role-card.delay-2 {
-        animation-delay: 0.2s;
-      }
-
-      .tagline {
-        margin: 5rem auto 0;
-        max-width: 64rem;
-        text-align: center;
-      }
-
-      .tagline p {
-        margin: 0;
-        font-family: "Lora", Georgia, serif;
-        font-size: 1.125rem;
-        font-style: italic;
-        color: #000;
-      }
+      /* ---- Footer ---- */
 
       .site-footer {
-        padding: 1rem 1rem 2rem;
-        margin-top: -2rem;
-        background: #fff;
+        padding: 2rem 0;
+        border-top: 1px solid hsl(200 20% 92%);
+      }
+
+      .footer-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      @media (min-width: 768px) {
+        .footer-inner {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+      }
+
+      .footer-copy {
+        font-size: 0.8125rem;
+        color: var(--muted-foreground);
       }
 
       .social-row {
         display: flex;
         align-items: center;
-        justify-content: center;
         gap: 0.75rem;
       }
 
@@ -305,80 +590,181 @@
     </style>
   </head>
   <body>
-    <header>
-      <div class="container header-top">
-        <a class="lang-switch" href="index.html" hreflang="el" lang="el">Ελληνικά</a>
-        <span
-          class="demo-badge"
-          role="status"
-          title="Static demo — not the final website."
-          >Demo</span>
+    <!-- Navbar -->
+    <nav class="container">
+      <div class="navbar">
         <a class="logo" href="index_en.html">Klinly</a>
+        <div class="nav-right">
+          <span class="demo-badge" role="status" title="Static demo">Demo</span>
+          <a class="lang-switch" href="index.html" hreflang="el" lang="el">Ελληνικά</a>
+        </div>
       </div>
-      <div class="container hero">
-        <h1 class="animate-fade-in">Hospitality operations, simplified</h1>
-        <p class="animate-slide-up">
-          We connect people, teams, and properties for smooth guest turnover.
-        </p>
-      </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="container hero">
+      <span class="hero-label animate-fade-in">For short-term rental properties</span>
+      <h1 class="animate-slide-up">
+        Find reliable cleaning services for your property
+      </h1>
+      <p class="hero-sub animate-slide-up delay-1">
+        Klinly connects property managers with professional cleaners.
+        Smart matching, instant payment, reliable guest turnover.
+      </p>
+      <a class="hero-cta animate-slide-up delay-2" href="#explore">
+        Explore the platform
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+        </svg>
+      </a>
     </header>
 
-    <main class="main-area">
-      <div class="container">
-        <div class="role-grid">
-          <a class="role-card animate-slide-up" href="new_en.html">
-            <h2>Turnover Specialist</h2>
-            <span class="cta">Get started</span>
-          </a>
-          <a class="role-card animate-slide-up delay-1" href="cleaning-dashboard_en.html">
-            <h2>Maintenance Services</h2>
-            <span class="cta">Get started</span>
-          </a>
-          <a class="role-card animate-slide-up delay-2" href="operator-dashboard_en.html">
-            <h2>Property Manager</h2>
-            <span class="cta">Get started</span>
-          </a>
+    <main>
+      <!-- How it works -->
+      <section id="how-it-works" class="section section-alt">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="animate-slide-up">How it works</h2>
+            <p class="animate-slide-up delay-1">Three simple steps, no complexity.</p>
+          </div>
+          <div class="steps-grid">
+            <div class="step-card animate-slide-up delay-1">
+              <span class="step-number">1</span>
+              <h3>Post a job</h3>
+              <p>The property manager lists the property and the guest turnover dates.</p>
+            </div>
+            <div class="step-card animate-slide-up delay-2">
+              <span class="step-number">2</span>
+              <h3>Accept a job</h3>
+              <p>Cleaning services browse available jobs and pick the ones that fit their schedule.</p>
+            </div>
+            <div class="step-card animate-slide-up delay-3">
+              <span class="step-number">3</span>
+              <h3>Instant payment</h3>
+              <p>Once the job is done, payment is processed automatically. No delays.</p>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <div class="tagline">
-          <p>Clear organization, respect for people, reliable guest turnover.</p>
+      <!-- Audience value props -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Built for both sides</h2>
+            <p>Whether you manage properties or provide cleaning services.</p>
+          </div>
+          <div class="audience-grid">
+            <div class="audience-card">
+              <div class="audience-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+              </div>
+              <h3>Property Managers</h3>
+              <p>Stop searching manually. Find reliable professionals, rated by other hosts.</p>
+              <ul>
+                <li>Automatic matching with available teams</li>
+                <li>Pay only when the job is completed</li>
+                <li>History and reviews per property</li>
+              </ul>
+            </div>
+            <div class="audience-card">
+              <div class="audience-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                </svg>
+              </div>
+              <h3>Cleaning Services</h3>
+              <p>Pick the jobs that suit you, in your area, on your own schedule.</p>
+              <ul>
+                <li>Accept jobs near you</li>
+                <li>Get paid as soon as the job is done</li>
+                <li>Build your reputation with reviews</li>
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      <!-- Payment highlight -->
+      <section class="section section-alt">
+        <div class="container">
+          <div class="highlight-banner">
+            <div class="highlight-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+              </svg>
+            </div>
+            <div class="highlight-text">
+              <h3>Instant payment. No exceptions.</h3>
+              <p>Cleaners get paid as soon as they finish the job. Property owners pay only when the work is done. Fair, simple, transparent.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Explore / Login -->
+      <section id="explore" class="explore-section">
+        <div class="container">
+          <h2>Explore the platform</h2>
+          <p>See how Klinly works from your perspective.</p>
+          <div class="role-grid">
+            <a class="role-card animate-slide-up" href="new_en.html">
+              <h3>Turnover Specialist</h3>
+              <span class="cta">Get started</span>
+            </a>
+            <a class="role-card animate-slide-up delay-1" href="cleaning-dashboard_en.html">
+              <h3>Cleaning Services</h3>
+              <span class="cta">Get started</span>
+            </a>
+            <a class="role-card animate-slide-up delay-2" href="operator-dashboard_en.html">
+              <h3>Property Manager</h3>
+              <span class="cta">Get started</span>
+            </a>
+          </div>
+        </div>
+      </section>
     </main>
 
+    <!-- Footer -->
     <footer class="site-footer">
       <div class="container">
-        <div class="social-row">
-          <a href="#" aria-label="Email">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect width="20" height="16" x="2" y="4" rx="2" />
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-            </svg>
-          </a>
-          <a href="#" aria-label="LinkedIn">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-            </svg>
-          </a>
-          <a href="#" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M13.397 20.997v-8.196h2.765l.411-3.209h-3.176V7.548c0-.926.258-1.56 1.587-1.56h1.684V3.127A22.336 22.336 0 0 0 14.201 3c-2.444 0-4.122 1.492-4.122 4.231v2.355H7.332v3.209h2.753v8.202h3.312z" />
-            </svg>
-          </a>
-          <a href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg>
-          </a>
-          <a href="#" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path
-                fill-rule="evenodd"
-                d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </a>
+        <div class="footer-inner">
+          <span class="footer-copy">&copy; 2025 Klinly</span>
+          <div class="social-row">
+            <a href="#" aria-label="Email">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+              </svg>
+            </a>
+            <a href="#" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+            </a>
+            <a href="#" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M13.397 20.997v-8.196h2.765l.411-3.209h-3.176V7.548c0-.926.258-1.56 1.587-1.56h1.684V3.127A22.336 22.336 0 0 0 14.201 3c-2.444 0-4.122 1.492-4.122 4.231v2.355H7.332v3.209h2.753v8.202h3.312z" />
+              </svg>
+            </a>
+            <a href="https://x.com/" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+            </a>
+            <a href="#" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path
+                  fill-rule="evenodd"
+                  d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </footer>
